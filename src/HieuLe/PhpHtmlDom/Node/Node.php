@@ -149,7 +149,11 @@ class Node
      */
     public function contains(Node $node)
     {
-	
+	if ($node === NULL)
+	    return FALSE;
+	if ($node === $this)
+	    return TRUE;
+	return $this->_childNodes->contains($node);
     }
 
     public function compareDocumentPosition(Node $other)
@@ -168,10 +172,10 @@ class Node
      * @param \HieuLe\PhpHtmlDom\Node\Node $node
      * @return \HieuLe\PhpHtmlDom\Node\Node
      */
-    public function append(Node $node)
+    public function appendChild(Node $node)
     {
-	if ($node === $this)
-	    throw new DOMException(DOMException::INVALID_MODIFICATION_ERR, "Cannot append a node to itself");
+	if ($node->contains($this))
+	    throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself");
 	$this->_childNodes->push($node);
 	$node->_parentNode = $this;
 	return $this;
@@ -186,21 +190,42 @@ class Node
      */
     public function appendTo(Node $node)
     {
-	if ($node === $this)
-	    throw new DOMException(DOMException::INVALID_MODIFICATION_ERR, "Cannot append a node to itself");
+	if ($this->contains($node))
+	    throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself");
 	$this->_parentNode = $node;
-	$node->append($this);
+	$node->appendChild($this);
 	return $this;
     }
 
-    public function replaceChild(Node $node, Node $child)
+    public function replaceChild(Node $newChild, Node $oldChild)
     {
-	
+	if($oldChild->_parentNode !== $this)
+	    throw new DOMException(DOMException::NOT_FOUND_ERR, "The oldChild is not a child of this node.");
+	if ($newChild->contains($this))
+	    throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself or its ancestor");
+	if ($this->_childNodes->replace($newChild, $oldChild))
+	{
+	    $oldChild->_parentNode = NULL;
+	    $newChild->_parentNode = $this;
+	}
+	return $this;
     }
 
+    /**
+     * Removes the child node indicated by oldChild from the list of children, and returns it.
+     * 
+     * @param \HieuLe\PhpHtmlDom\Node\Node $child
+     * @return \HieuLe\PhpHtmlDom\Node\Node
+     * @throws DOMException
+     * 
+     */
     public function removeChild(Node $child)
     {
-	
+	if($child->_parentNode !== $this)
+	    throw new DOMException(DOMException::NOT_FOUND_ERR, "The target node is not the child of this node");
+	if ($this->_childNodes->remove($child) !== FALSE)
+	    $child->_parentNode = NULL;
+	return $this;
     }
 
     public function getParent()

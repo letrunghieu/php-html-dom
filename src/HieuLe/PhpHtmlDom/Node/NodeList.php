@@ -82,6 +82,43 @@ class NodeList implements \IteratorAggregate
 	return $this->_items[$index];
     }
 
+    public function remove($item)
+    {
+	$position = array_search($item, $this->_items);
+	if ($position !== FALSE)
+	{
+	    unset($this->_items[$position]);
+	    return count($this->_items);
+	}
+	return FALSE;
+    }
+
+    public function contains(Node $node)
+    {
+	if (array_search($node, $this->_items) !== FALSE)
+	    return true;
+	else
+	{
+	    foreach ($this->_items as $item)
+		if ($item->contains($node))
+		    return true;
+	}
+	return false;
+    }
+    
+    public function replace(Node $newOne, Node $oldOne)
+    {
+	for($i = 0; $i < count($this->_items); $i++)
+	{
+	    if ($this->_items[$i] == $oldOne)
+	    {
+		$this->_items[$i] = $newOne;
+		return true;
+	    }
+	}
+	return false;
+    }
+
     public function getIterator()
     {
 	return new \ArrayIterator($this->_items);
