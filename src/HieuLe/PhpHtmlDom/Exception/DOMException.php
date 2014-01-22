@@ -113,34 +113,34 @@ class DOMException extends \Exception
 
     private $_name;
     private static $_nameTable = array(
-	static::INDEX_SIZE_ERR => "IndexSizeError",
-	static::HIERARCHY_REQUEST_ERR => "HierarchyRequestError",
-	static::WRONG_DOCUMENT_ERR => "WrongDocumentError",
-	static::INVALID_CHARACTER_ERR => "InvalidCharacterError",
-	static::NO_MODIFICATION_ALLOWED_ERR => "NoModificationAllowedError",
-	static::NOT_FOUND_ERR => "NotFoundError",
-	static::NOT_SUPPORTED_ERR => "NotSupportedError",
-	static::INVALID_STATE_ERR => "InvalidStateError",
-	static::SYNTAX_ERR => "SyntaxError",
-	static::INVALID_MODIFICATION_ERR => "InvalidModificationError",
-	static::NAMESPACE_ERR => "NamespaceError",
-	static::INVALID_ACCESS_ERR => "InvalidAccessError",
-	static::SECURITY_ERR => "SecurityError",
-	static::NETWORK_ERR => "NetworkError",
-	static::ABORT_ERR => "AbortError",
-	static::URL_MISMATCH_ERR => "URLMismatchError",
-	static::QUOTA_EXCEEDED_ERR => "QuotaExceededError",
-	static::TIMEOUT_ERR => "TimeoutError",
-	static::INVALID_NODE_TYPE_ERR => "InvalidNodeTypeError",
-	static::DATA_CLONE_ERR => "DataCloneError",
+	self::INDEX_SIZE_ERR => "IndexSizeError",
+	self::HIERARCHY_REQUEST_ERR => "HierarchyRequestError",
+	self::WRONG_DOCUMENT_ERR => "WrongDocumentError",
+	self::INVALID_CHARACTER_ERR => "InvalidCharacterError",
+	self::NO_MODIFICATION_ALLOWED_ERR => "NoModificationAllowedError",
+	self::NOT_FOUND_ERR => "NotFoundError",
+	self::NOT_SUPPORTED_ERR => "NotSupportedError",
+	self::INVALID_STATE_ERR => "InvalidStateError",
+	self::SYNTAX_ERR => "SyntaxError",
+	self::INVALID_MODIFICATION_ERR => "InvalidModificationError",
+	self::NAMESPACE_ERR => "NamespaceError",
+	self::INVALID_ACCESS_ERR => "InvalidAccessError",
+	self::SECURITY_ERR => "SecurityError",
+	self::NETWORK_ERR => "NetworkError",
+	self::ABORT_ERR => "AbortError",
+	self::URL_MISMATCH_ERR => "URLMismatchError",
+	self::QUOTA_EXCEEDED_ERR => "QuotaExceededError",
+	self::TIMEOUT_ERR => "TimeoutError",
+	self::INVALID_NODE_TYPE_ERR => "InvalidNodeTypeError",
+	self::DATA_CLONE_ERR => "DataCloneError",
     );
 
     public function __construct($code, $message)
     {
 	parent::__construct($message, $code);
-	if (isset(static::$_nameTable[$code]))
+	if (isset(self::$_nameTable[$code]))
 	{
-	    $this->_name = static::$_nameTable[$code];
+	    $this->_name = self::$_nameTable[$code];
 	}
 	else
 	    $this->_name = "DOMError";

@@ -1,6 +1,6 @@
 <?php
 
-namespace HieuLe\PhpHtmlDom;
+namespace HieuLe\PhpHtmlDom\Node;
 
 /**
  * Objects implementing the Document, DocumentFragment, DocumentType, Element, Text, ProcessingInstruction, or Comment interface (simply called nodes) participate in a tree, simply named the node tree. 
@@ -154,6 +154,16 @@ class Node
     public function removeChild(Node $child)
     {
 	
+    }
+    
+    public static function escAttr($input)
+    {
+	return htmlspecialchars($input, ENT_QUOTES | ENT_HTML5, 'UTF-8', false);
+    }
+    
+    public static function escHtml($input)
+    {
+	return htmlentities($input, ENT_NOQUOTES | ENT_HTML5, 'UTF-8', false);
     }
 
 }
