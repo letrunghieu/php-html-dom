@@ -177,6 +177,22 @@ class Node
 	return $this;
     }
 
+    /**
+     * Append this node to another node
+     * 
+     * @param \HieuLe\PhpHtmlDom\Node\Node $node
+     * @return \HieuLe\PhpHtmlDom\Node\Node
+     * @throws DOMException
+     */
+    public function appendTo(Node $node)
+    {
+	if ($node === $this)
+	    throw new DOMException(DOMException::INVALID_MODIFICATION_ERR, "Cannot append a node to itself");
+	$this->_parentNode = $node;
+	$node->append($this);
+	return $this;
+    }
+
     public function replaceChild(Node $node, Node $child)
     {
 	
@@ -186,7 +202,7 @@ class Node
     {
 	
     }
-    
+
     public function getParent()
     {
 	return $this->_parentNode;
