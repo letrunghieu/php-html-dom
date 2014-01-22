@@ -1,19 +1,24 @@
 <?php
-namespace HieuLe\PhpHtmlDom;
+
+namespace HieuLe\PhpHtmlDom\Node;
+
+use HieuLe\PhpHtmlDom\Exception\DOMException;
+
 /**
  * A NodeList object is a collection of nodes. 
  *
  * @author TrungHieu
  */
-class NodeList
+class NodeList implements \IteratorAggregate
 {
+
     private $_items = array();
-    
+
     public function length()
     {
 	return count($this->_items);
     }
-    
+
     /**
      * Adds new elements to the end of this list, and returns the new length
      * 
@@ -24,7 +29,7 @@ class NodeList
     {
 	return array_push($this->_items, $node);
     }
-    
+
     /**
      * Removes the last element of this list, and returns that element
      * 
@@ -34,7 +39,7 @@ class NodeList
     {
 	return array_pop($this->_items);
     }
-    
+
     /**
      * Removes the first element of this list, and returns that element
      * 
@@ -44,7 +49,7 @@ class NodeList
     {
 	return array_shift($this->_items);
     }
-    
+
     /**
      * Adds new elements to the beginning of this list, and returns the new length
      * 
@@ -55,11 +60,33 @@ class NodeList
     {
 	return array_unshift($this->_items, $node);
     }
-    
+
     public function isEmpty()
     {
 	return empty($this->_items);
     }
+
+    /**
+     * Return an item at a specified position in the list
+     * 
+     * @param integer $index
+     * @return Node
+     * @throws DOMException
+     */
+    public function item($index)
+    {
+	if (!is_int($index))
+	    throw new DOMException(DOMException::INVALID_ACCESS_ERR, "The index must be an integer");
+	if ($index >= count($this->_items))
+	    throw new DOMException(DOMException::INDEX_SIZE_ERR, "The index is out of range");
+	return $this->_items[$index];
+    }
+
+    public function getIterator()
+    {
+	return new \ArrayIterator($this->_items);
+    }
+
 }
 
 ?>

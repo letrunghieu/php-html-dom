@@ -2,6 +2,8 @@
 
 namespace HieuLe\PhpHtmlDom\Node;
 
+use \HieuLe\PhpHtmlDom\Exception\DOMException;
+
 /**
  * Objects implementing the Document, DocumentFragment, DocumentType, Element, Text, ProcessingInstruction, or Comment interface (simply called nodes) participate in a tree, simply named the node tree. 
  * @link http://dom.spec.whatwg.org/#concept-node
@@ -44,6 +46,11 @@ class Node
     protected $_nodeValue;
     protected $_textContent;
 
+    public function __construct()
+    {
+	$this->_childNodes = new NodeList();
+    }
+
     /**
      * The hasChildNodes() method must return true if the context object has children, and false otherwise. 
      * 
@@ -52,6 +59,20 @@ class Node
     public function hasChildNodes()
     {
 	return !$this->_childNodes->isEmpty();
+    }
+
+    /**
+     * Return the entire children or the on at the specified index
+     * 
+     * @param type $index
+     * @return Node|NodeList
+     */
+    public function children($index = null)
+    {
+	if ($index === null)
+	    return $this->_childNodes;
+	else
+	    return $this->_childNodes->item($index);
     }
 
     /**
@@ -141,9 +162,19 @@ class Node
 	
     }
 
-    public function appendChild(Node $node)
+    /**
+     * Insert a node to the end of this node
+     * 
+     * @param \HieuLe\PhpHtmlDom\Node\Node $node
+     * @return \HieuLe\PhpHtmlDom\Node\Node
+     */
+    public function append(Node $node)
     {
-	
+	if ($node === $this)
+	    throw new DOMException(DOMException::INVALID_MODIFICATION_ERR, "Cannot append a node to itself");
+	$this->_childNodes->push($node);
+	$node->_parentNode = $this;
+	return $this;
     }
 
     public function replaceChild(Node $node, Node $child)
@@ -156,11 +187,16 @@ class Node
 	
     }
     
+    public function getParent()
+    {
+	return $this->_parentNode;
+    }
+
     public static function escAttr($input)
     {
 	return htmlspecialchars($input, ENT_QUOTES | ENT_HTML5, 'UTF-8', false);
     }
-    
+
     public static function escHtml($input)
     {
 	return htmlentities($input, ENT_NOQUOTES | ENT_HTML5, 'UTF-8', false);
