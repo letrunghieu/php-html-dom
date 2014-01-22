@@ -96,6 +96,13 @@ class Element extends Node
 	return $this->_attributes;
     }
 
+    /**
+     * Add one or more class. Each class is separated by spaces
+     * 
+     * @param tring $className
+     * @return \HieuLe\PhpHtmlDom\Node\Element
+     * @throws DOMException
+     */
     public function addClass($className)
     {
 	$classes = explode(" ", trim($className));
@@ -120,6 +127,12 @@ class Element extends Node
 	return $this;
     }
 
+    /**
+     * Check whether a class is exist in this element
+     * 
+     * @param string $className
+     * @return boolean
+     */
     public function hasClass($className)
     {
 	if (!isset($this->_attributes['class']))
@@ -130,7 +143,13 @@ class Element extends Node
 	    $existedClasses = explode(" ", $this->_attributes['class']);
 	return in_array($className, $existedClasses);
     }
-
+    
+    /**
+     * Remove one or more class, each class is separated by spaces
+     * 
+     * @param string $className
+     * @return \HieuLe\PhpHtmlDom\Node\Element
+     */
     public function removeClass($className)
     {
 	$classes = explode(" ", trim($className));
