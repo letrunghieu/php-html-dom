@@ -99,6 +99,33 @@ class ElementTest extends PHPUnit_Framework_TestCase
 	
 	$element->addClass('foo');
 	$this->assertSame('foo bar class1 class2', $element->getAttr('class'));
+	
+	$element->addClass('cl')->setAttr('class', 'new-class');
+	$this->assertSame('new-class', $element->getAttr('class'));
+    }
+    
+    public function testHasClass()
+    {
+	$element = new Element('div');
+	$this->assertFalse($element->hasClass('foo'));
+	
+	$element->addClass('foo');
+	$this->assertTrue($element->hasClass('foo'));
+	
+	$element->addClass('bar');
+	$this->assertTrue($element->hasClass('bar'));
+    }
+    
+    public function removeClass()
+    {
+	$element = new Element('div');
+	$element->addClass('foo bar new-class')->removeClass('foo');
+	
+	$this->assertFalse($element->hasClass('foo'));
+	$this->assertTrue($element->hasClass('bar'));
+	
+	$element->removeClass('bar new-class foo');
+	$this->assertNull($element->getAttr('class'));
     }
 
 }

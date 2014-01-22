@@ -119,10 +119,41 @@ class Element extends Node
 	    $this->_attributes['class'] = $newClasses;
 	return $this;
     }
-    
+
     public function hasClass($className)
     {
+	if (!isset($this->_attributes['class']))
+	{
+	    $existedClasses = array();
+	}
+	else
+	    $existedClasses = explode(" ", $this->_attributes['class']);
+	return in_array($className, $existedClasses);
+    }
+
+    public function removeClass($className)
+    {
+	$classes = explode(" ", trim($className));
+	if (!isset($this->_attributes['class']))
+	{
+	    $existedClasses = array();
+	}
+	else
+	    $existedClasses = explode(" ", $this->_attributes['class']);
+	$newClasses = array();
+	foreach ($existedClasses as $class)
+	{
+	    if (!in_array($class, $classes))
+		$newClasses[] = $class;
+	}
+
+	$newClasses = trim(implode(" ", array_merge($existedClasses, $newClasses)));
+	if ($newClasses)
+	    $this->_attributes['class'] = $newClasses;
+	else if (isset($this->_attributes['class']))
+	    unset($this->_attributes['class']);
 	
+	return $this;
     }
 
     // @todo implement the check phase
