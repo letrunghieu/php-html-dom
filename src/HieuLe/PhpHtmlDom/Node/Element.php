@@ -13,13 +13,43 @@ use \HieuLe\PhpHtmlDom\Exception\DOMException;
 class Element extends Node
 {
 
+    /**
+     * HTML void element as defined as {@link http://www.w3.org/TR/html5/syntax.html#void-elements}
+     *
+     * @var type 
+     */
+    protected static $voidElements = array(
+	'area' => true,
+	'base' => true,
+	'br' => true,
+	'col' => true,
+	'embed' => true,
+	'hr' => true,
+	'img' => true,
+	'input' => true,
+	'keygen' => true,
+	'link' => true,
+	'meta' => true,
+	'param' => true,
+	'source' => true,
+	'track' => true,
+	'wbr' => true,
+    );
     protected $_attributes = array();
     private $_tagName;
+    private $_isSelfClosing = false;
 
     public function __construct($tagName)
     {
-	$this->_tagName = $tagName;
+	$this->_tagName = trim($tagName);
 	$this->_nodeType = Node::ELEMENT_NODE;
+	if (isset(self::$voidElements[$this->_tagName]))
+	    $this->_isSelfClosing = true;
+    }
+    
+    public function isSelfClosing()
+    {
+	return $this->_isSelfClosing;
     }
 
     /**
@@ -61,7 +91,7 @@ class Element extends Node
     {
 	if (!$this->isValidAttrName($attribute))
 	    throw new DOMException(DOMException::INVALID_CHARACTER_ERR, "The attribute name is not valid");
-	// Remove the attr if it is boolean and set to FALSE or NULL
+// Remove the attr if it is boolean and set to FALSE or NULL
 	if ($value === FALSE || $value === NULL)
 	{
 	    if (isset($this->_attributes[$attribute]))
@@ -143,7 +173,7 @@ class Element extends Node
 	    $existedClasses = explode(" ", $this->_attributes['class']);
 	return in_array($className, $existedClasses);
     }
-    
+
     /**
      * Remove one or more class, each class is separated by spaces
      * 
@@ -171,11 +201,11 @@ class Element extends Node
 	    $this->_attributes['class'] = $newClasses;
 	else if (isset($this->_attributes['class']))
 	    unset($this->_attributes['class']);
-	
+
 	return $this;
     }
 
-    // @todo implement the check phase
+// @todo implement the check phase
     private function isValidAttrName($attribute)
     {
 	$matches = null;

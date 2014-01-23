@@ -240,6 +240,12 @@ class Node
     {
 	return $this->_parentNode;
     }
+    
+    public function html($formatter = null)
+    {
+	if ($formatter == null)
+	    $formatter;
+    }
 
     public static function escAttr($input)
     {
