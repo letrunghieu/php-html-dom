@@ -45,6 +45,54 @@ class FormatterTest extends PHPUnit_Framework_TestCase
 	$element = new Element('link');
 	$this->assertEquals("<link />", $formatter->writeElementOpenningTag($element));
     }
+    
+    public function testWriteElementClosingTag()
+    {
+	$element = new Element('div');
+	$formatter = new Formatter();
+	$this->assertEquals("</div>", $formatter->writeElementClosingTag($element));
+	
+	$element = new Element('link');
+	$this->assertEquals("", $formatter->writeElementClosingTag($element));
+    }
+    
+    public function testFormatElementNode()
+    {
+	$formatter = new Formatter();
+	
+	$div = new Element('div');
+	$html= <<<HTML
+<div>
+</div>
+
+HTML;
+	$this->assertEquals($html, $formatter->format($div));
+	
+	$html= <<<HTML
+  <div>
+  </div>
+
+HTML;
+	$this->assertEquals($html, $formatter->format($div, 1));
+	
+	$p = new Element('p');
+	$p->appendTo($div);
+	$br = new Element('br');
+	$br->appendTo($div);
+	$a = new Element('a');
+	$a->appendTo($p);
+	$html= <<<HTML
+  <div>
+    <p>
+      <a>
+      </a>
+    </p>
+    <br />
+  </div>
+
+HTML;
+	$this->assertEquals($html, $formatter->format($div, 1));
+    }
 }
 
 ?>

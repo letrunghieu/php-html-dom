@@ -41,6 +41,7 @@ class Element extends Node
 
     public function __construct($tagName)
     {
+	parent::__construct();
 	$this->_tagName = trim($tagName);
 	$this->_nodeType = Node::ELEMENT_NODE;
 	if (isset(self::$voidElements[$this->_tagName]))

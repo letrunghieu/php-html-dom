@@ -241,6 +241,11 @@ class Node
 	return $this->_parentNode;
     }
     
+    public function getNodeType()
+    {
+	return $this->_nodeType;
+    }
+    
     public function html($formatter = null)
     {
 	if ($formatter == null)

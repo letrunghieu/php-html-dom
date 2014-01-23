@@ -14,6 +14,8 @@ class Formatter
 {
 
     public $ommitClosableTags = false;
+    public $indentString = "  ";
+    public $newlineChar = PHP_EOL;
 
     /**
      * Contruct the list of all attributes and their value in the format <code>attribute="value"</code>
@@ -57,9 +59,44 @@ class Formatter
 	return $startTag;
     }
 
-    public function format(Node $node)
+    /**
+     * Write element closing tag
+     * @link http://www.w3.org/TR/html5/syntax.html#end-tags 
+     * 
+     * @param \HieuLe\PhpHtmlDom\Node\Element $element
+     * @return string
+     */
+    public function writeElementClosingTag(Element $element)
     {
-	
+	if ($element->isSelfClosing())
+	    return "";
+	return "</{$element->getTagName()}>";
+    }
+
+    public function format(Node $node, $depth = 0)
+    {
+	// write the element node
+	if ($node->getNodeType() == Node::ELEMENT_NODE)
+	{
+	    $openTag = $this->writeElementOpenningTag($node);
+	    $content = "";
+	    foreach ($node->children() as $n)
+	    {
+		$content .= $this->format($n, $depth + 1);
+	    }
+	    $closeTag = $this->writeElementClosingTag($node);
+	    $indexText = $this->writeIndent($depth);
+	    $tag = "{$indexText}{$openTag}{$this->newlineChar}{$content}";
+	    if ($closeTag)
+		$tag .= "{$indexText}{$closeTag}{$this->newlineChar}";
+	    return $tag;
+	}
+	// @todo write other types of node
+    }
+
+    private function writeIndent($depth)
+    {
+	return str_repeat($this->indentString, $depth);
     }
 
 }
