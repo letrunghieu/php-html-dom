@@ -106,6 +106,16 @@ class NodeList implements \IteratorAggregate
 	return false;
     }
     
+    public function insertBefore(Node $newOne, Node $refOne)
+    {
+	$position = array_search($refOne, $this->_items);
+	if ($position !== FALSE)
+	{
+	    $this->_items = array_merge(array_slice($this->_items, 0, $position), array($newOne), array_slice($this->_items, $position));
+	}
+	return FALSE;
+    }
+    
     public function replace(Node $newOne, Node $oldOne)
     {
 	for($i = 0; $i < count($this->_items); $i++)

@@ -159,6 +159,21 @@ class NodeTest extends PHPUnit_Framework_TestCase
 	$parent->appendChild($child)->appendChild($child2)->appendTo($node);
 	$parent->replaceChild($node, $child);
     }
+    
+    public function testInsertBefore()
+    {
+	$parent = new Node();
+	$child = new Node();
+	$newChild = new Node();
+	
+	$parent->appendChild($child)->insertBefore($newChild, $child);
+	$this->assertSame($newChild, $parent->children(0));
+	
+	$lastChild = new Node();
+	$parent->insertBefore($lastChild);
+	$this->assertSame($parent->children(2), $lastChild);
+	
+    }
 }
 
 ?>

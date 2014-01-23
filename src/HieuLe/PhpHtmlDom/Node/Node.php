@@ -36,7 +36,6 @@ class Node
      * @var Node
      */
     protected $_parentNode;
-    protected $_parentElement;
 
     /**
      *
@@ -161,9 +160,18 @@ class Node
 	
     }
 
-    public function insertBefore(Node $node, Node $child)
+    public function insertBefore(Node $newNode, Node $referenceNode = NULL)
     {
-	
+	if ($referenceNode === NULL)
+	    return $this->appendChild ($newNode);
+	if ($newNode->contains($this))
+	    throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself or its decendants");
+	if ($referenceNode->_parentNode !== $this)
+	    throw new DOMException(DOMException::NOT_FOUND_ERR, "The reference node is not a child of this node");
+	if ($this->_childNodes->insertBefore($newNode, $referenceNode)){
+	    $newNode->_parentNode = $this;
+	}
+	return $this;
     }
 
     /**
