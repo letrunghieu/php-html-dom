@@ -4,6 +4,7 @@ namespace HieuLe\PhpHtmlDom\HTML;
 
 use HieuLe\PhpHtmlDom\Node\Node;
 use HieuLe\PhpHtmlDom\Node\Element;
+use HieuLe\PhpHtmlDom\Node\Text;
 
 /**
  * Format HTML node tree
@@ -80,6 +81,10 @@ class Formatter
 	{
 	    return $this->_formatElement($node, $depth);
 	}
+	else if ($node->getNodeType() == Node::TEXT_NODE)
+	{
+	    return $this->_formatText($node, $depth);
+	}
 	// @todo write other types of node
     }
 
@@ -97,6 +102,11 @@ class Formatter
 	if ($closeTag)
 	    $tag .= "{$indexText}{$closeTag}{$this->newlineChar}";
 	return $tag;
+    }
+    
+    private function _formatText(Text $node, $depth)
+    {
+	return $node->html();
     }
 
     private function _writeIndent($depth)

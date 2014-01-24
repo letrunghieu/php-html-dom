@@ -246,10 +246,16 @@ class Node
 	return $this->_nodeType;
     }
     
+    public function getNodeValue()
+    {
+	return $this->_nodeValue;
+    }
+    
     public function html($formatter = null)
     {
 	if ($formatter == null)
-	    $formatter;
+	    $formatter = new \HieuLe\PhpHtmlDom\HTML\Formatter();
+	$formatter->format($this);
     }
 
     public static function escAttr($input)
