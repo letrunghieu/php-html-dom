@@ -78,23 +78,28 @@ class Formatter
 	// write the element node
 	if ($node->getNodeType() == Node::ELEMENT_NODE)
 	{
-	    $openTag = $this->writeElementOpenningTag($node);
-	    $content = "";
-	    foreach ($node->children() as $n)
-	    {
-		$content .= $this->format($n, $depth + 1);
-	    }
-	    $closeTag = $this->writeElementClosingTag($node);
-	    $indexText = $this->writeIndent($depth);
-	    $tag = "{$indexText}{$openTag}{$this->newlineChar}{$content}";
-	    if ($closeTag)
-		$tag .= "{$indexText}{$closeTag}{$this->newlineChar}";
-	    return $tag;
+	    return $this->_formatElement($node, $depth);
 	}
 	// @todo write other types of node
     }
 
-    private function writeIndent($depth)
+    private function _formatElement(Node $node, $depth)
+    {
+	$openTag = $this->writeElementOpenningTag($node);
+	$content = "";
+	foreach ($node->children() as $n)
+	{
+	    $content .= $this->format($n, $depth + 1);
+	}
+	$closeTag = $this->writeElementClosingTag($node);
+	$indexText = $this->_writeIndent($depth);
+	$tag = "{$indexText}{$openTag}{$this->newlineChar}{$content}";
+	if ($closeTag)
+	    $tag .= "{$indexText}{$closeTag}{$this->newlineChar}";
+	return $tag;
+    }
+
+    private function _writeIndent($depth)
     {
 	return str_repeat($this->indentString, $depth);
     }
