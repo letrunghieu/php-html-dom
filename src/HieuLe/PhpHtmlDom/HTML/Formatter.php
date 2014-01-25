@@ -17,6 +17,9 @@ class Formatter
     public $ommitClosableTags = false;
     public $indentString = "  ";
     public $newlineChar = PHP_EOL;
+    public $customFormatRules = array(
+	'textarea' => array('format_inside' => false),
+    );
 
     /**
      * Contruct the list of all attributes and their value in the format <code>attribute="value"</code>
@@ -74,39 +77,56 @@ class Formatter
 	return "</{$element->getTagName()}>";
     }
 
-    public function format(Node $node, $depth = 0)
+    public function format(Node $node, $depth = 0, $allowFormat = true)
     {
 	// write the element node
 	if ($node->getNodeType() == Node::ELEMENT_NODE)
 	{
-	    return $this->_formatElement($node, $depth);
-	}
-	else if ($node->getNodeType() == Node::TEXT_NODE)
+	    return $this->_formatElement($node, $depth, $allowFormat);
+	} else if ($node->getNodeType() == Node::TEXT_NODE)
 	{
-	    return $this->_formatText($node, $depth);
+	    return $this->_formatText($node, $depth, $allowFormat);
 	}
 	// @todo write other types of node
     }
 
-    private function _formatElement(Node $node, $depth)
+    private function _formatElement(Element $node, $depth, $allowFormat)
     {
 	$openTag = $this->writeElementOpenningTag($node);
 	$content = "";
+	$insideDepth = $depth + 1;
 	foreach ($node->children() as $n)
 	{
-	    $content .= $this->format($n, $depth + 1);
+	    if (isset($this->customFormatRules[$node->getTagName()]) && isset($this->customFormatRules[$node->getTagName()]['format_inside']) && !$this->customFormatRules[$node->getTagName()]['format_inside'])
+		$content .= $this->format($n, 0, false);
+	    else
+		$content .= $this->format($n, $insideDepth);
 	}
 	$closeTag = $this->writeElementClosingTag($node);
 	$indexText = $this->_writeIndent($depth);
-	$tag = "{$indexText}{$openTag}{$this->newlineChar}{$content}";
+	$afterOpenTag = $this->newlineChar;
+	if ($content == "" || (isset($this->customFormatRules[$node->getTagName()]) && isset($this->customFormatRules[$node->getTagName()]['format_inside']) && !$this->customFormatRules[$node->getTagName()]['format_inside']))
+	    $afterOpenTag = "";
+	if ($node->isSelfClosing())
+	    $afterOpenTag = $this->newlineChar;
+	$beforeCloseTag = $indexText;
+	if ($content == "" || (isset($this->customFormatRules[$node->getTagName()]) && isset($this->customFormatRules[$node->getTagName()]['format_inside']) && !$this->customFormatRules[$node->getTagName()]['format_inside']))
+	    $beforeCloseTag = "";
+	$tag = "{$indexText}{$openTag}{$afterOpenTag}{$content}";
 	if ($closeTag)
-	    $tag .= "{$indexText}{$closeTag}{$this->newlineChar}";
+	    $tag .= "{$beforeCloseTag}{$closeTag}{$this->newlineChar}";
 	return $tag;
     }
-    
-    private function _formatText(Text $node, $depth)
+
+    private function _formatText(Text $node, $depth, $allowFormat)
     {
-	return $node->html();
+	$beforeText = "";
+	if ($allowFormat)
+	    $beforeText = $this->_writeIndent ($depth);
+	$afterText = "";
+	if ($allowFormat)
+	    $afterText = $this->newlineChar;
+	return "{$beforeText}{$node->html()}{$afterText}";
     }
 
     private function _writeIndent($depth)
