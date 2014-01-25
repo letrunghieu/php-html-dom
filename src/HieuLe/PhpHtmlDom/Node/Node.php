@@ -163,12 +163,13 @@ class Node
     public function insertBefore(Node $newNode, Node $referenceNode = NULL)
     {
 	if ($referenceNode === NULL)
-	    return $this->appendChild ($newNode);
+	    return $this->appendChild($newNode);
 	if ($newNode->contains($this))
 	    throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself or its decendants");
 	if ($referenceNode->_parentNode !== $this)
 	    throw new DOMException(DOMException::NOT_FOUND_ERR, "The reference node is not a child of this node");
-	if ($this->_childNodes->insertBefore($newNode, $referenceNode)){
+	if ($this->_childNodes->insertBefore($newNode, $referenceNode))
+	{
 	    $newNode->_parentNode = $this;
 	}
 	return $this;
@@ -184,6 +185,8 @@ class Node
     {
 	if ($node->contains($this))
 	    throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself");
+	if ($node->_parentNode)
+	    $node->_parentNode->removeChild($node);
 	$this->_childNodes->push($node);
 	$node->_parentNode = $this;
 	return $this;
@@ -200,14 +203,15 @@ class Node
     {
 	if ($this->contains($node))
 	    throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself");
-	$this->_parentNode = $node;
+	if ($this->_parentNode)
+	    $this->_parentNode->removeChild($this);
 	$node->appendChild($this);
 	return $this;
     }
 
     public function replaceChild(Node $newChild, Node $oldChild)
     {
-	if($oldChild->_parentNode !== $this)
+	if ($oldChild->_parentNode !== $this)
 	    throw new DOMException(DOMException::NOT_FOUND_ERR, "The oldChild is not a child of this node.");
 	if ($newChild->contains($this))
 	    throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself or its ancestor");
@@ -229,7 +233,7 @@ class Node
      */
     public function removeChild(Node $child)
     {
-	if($child->_parentNode !== $this)
+	if ($child->_parentNode !== $this)
 	    throw new DOMException(DOMException::NOT_FOUND_ERR, "The target node is not the child of this node");
 	if ($this->_childNodes->remove($child) !== FALSE)
 	    $child->_parentNode = NULL;
@@ -240,17 +244,17 @@ class Node
     {
 	return $this->_parentNode;
     }
-    
+
     public function getNodeType()
     {
 	return $this->_nodeType;
     }
-    
+
     public function getNodeValue()
     {
 	return $this->_nodeValue;
     }
-    
+
     public function html($formatter = null)
     {
 	if ($formatter == null)

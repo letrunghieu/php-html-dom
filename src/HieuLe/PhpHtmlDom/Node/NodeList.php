@@ -87,7 +87,7 @@ class NodeList implements \IteratorAggregate
 	$position = array_search($item, $this->_items);
 	if ($position !== FALSE)
 	{
-	    unset($this->_items[$position]);
+	    array_splice($this->_items, $position, 1);
 	    return count($this->_items);
 	}
 	return FALSE;

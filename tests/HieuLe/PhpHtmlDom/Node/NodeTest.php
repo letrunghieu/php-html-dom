@@ -35,8 +35,9 @@ class NodeTest extends PHPUnit_Framework_TestCase
 	$this->assertSame($child2, $parent->children(1));
 	
 	$parent->appendChild($child);
-	$this->assertSame($child, $parent->children(0));
-	$this->assertSame($child, $parent->children(2));
+	$this->assertEquals(2, $parent->children()->length());
+	$this->assertSame($child, $parent->children(1));
+	$this->assertSame($child2, $parent->children(0));
     }
     
     /**
@@ -65,8 +66,8 @@ class NodeTest extends PHPUnit_Framework_TestCase
 	$this->assertSame($child2, $parent->children(1));
 	
 	$child->appendTo($parent);
-	$this->assertSame($child, $parent->children(0));
-	$this->assertSame($child, $parent->children(2));
+	$this->assertSame($child2, $parent->children(0));
+	$this->assertSame($child, $parent->children(1));
     }
     
     public function testRemoveChild()
