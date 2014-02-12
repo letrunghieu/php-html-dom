@@ -197,12 +197,19 @@ class Element extends Node
 		$newClasses[] = $class;
 	}
 
-	$newClasses = trim(implode(" ", array_merge($existedClasses, $newClasses)));
+	$newClasses = trim(implode(" ", $newClasses));
 	if ($newClasses)
 	    $this->_attributes['class'] = $newClasses;
 	else if (isset($this->_attributes['class']))
 	    unset($this->_attributes['class']);
 
+	return $this;
+    }
+    
+    public function appendText($text)
+    {
+	$textNode = new Text($text);
+	$this->appendChild($textNode);
 	return $this;
     }
 

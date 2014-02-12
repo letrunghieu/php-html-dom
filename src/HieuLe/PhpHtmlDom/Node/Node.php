@@ -259,7 +259,7 @@ class Node
     {
 	if ($formatter == null)
 	    $formatter = new \HieuLe\PhpHtmlDom\HTML\Formatter();
-	$formatter->format($this);
+	return $formatter->format($this);
     }
 
     public static function escAttr($input)
