@@ -37,7 +37,7 @@ class Formatter
 		$attrPairs[] = "{$attr}";
 	    } else if ($value !== FALSE && $value !== NULL)
 	    {
-		$val = htmlspecialchars($value, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+		$val = htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false);
 		$attrPairs[] = "{$attr}=\"{$val}\"";
 	    }
 	}
