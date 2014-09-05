@@ -10,10 +10,10 @@ namespace HieuLe\PhpHtmlDom\Exception;
  */
 class DOMException extends \Exception
 {
+
     /**
      * The index is not in the allowed range. 
      */
-
     const INDEX_SIZE_ERR = 1;
 
     /**
@@ -113,42 +113,42 @@ class DOMException extends \Exception
 
     private $_name;
     private static $_nameTable = array(
-	self::INDEX_SIZE_ERR => "IndexSizeError",
-	self::HIERARCHY_REQUEST_ERR => "HierarchyRequestError",
-	self::WRONG_DOCUMENT_ERR => "WrongDocumentError",
-	self::INVALID_CHARACTER_ERR => "InvalidCharacterError",
-	self::NO_MODIFICATION_ALLOWED_ERR => "NoModificationAllowedError",
-	self::NOT_FOUND_ERR => "NotFoundError",
-	self::NOT_SUPPORTED_ERR => "NotSupportedError",
-	self::INVALID_STATE_ERR => "InvalidStateError",
-	self::SYNTAX_ERR => "SyntaxError",
-	self::INVALID_MODIFICATION_ERR => "InvalidModificationError",
-	self::NAMESPACE_ERR => "NamespaceError",
-	self::INVALID_ACCESS_ERR => "InvalidAccessError",
-	self::SECURITY_ERR => "SecurityError",
-	self::NETWORK_ERR => "NetworkError",
-	self::ABORT_ERR => "AbortError",
-	self::URL_MISMATCH_ERR => "URLMismatchError",
-	self::QUOTA_EXCEEDED_ERR => "QuotaExceededError",
-	self::TIMEOUT_ERR => "TimeoutError",
-	self::INVALID_NODE_TYPE_ERR => "InvalidNodeTypeError",
-	self::DATA_CLONE_ERR => "DataCloneError",
+        self::INDEX_SIZE_ERR              => "IndexSizeError",
+        self::HIERARCHY_REQUEST_ERR       => "HierarchyRequestError",
+        self::WRONG_DOCUMENT_ERR          => "WrongDocumentError",
+        self::INVALID_CHARACTER_ERR       => "InvalidCharacterError",
+        self::NO_MODIFICATION_ALLOWED_ERR => "NoModificationAllowedError",
+        self::NOT_FOUND_ERR               => "NotFoundError",
+        self::NOT_SUPPORTED_ERR           => "NotSupportedError",
+        self::INVALID_STATE_ERR           => "InvalidStateError",
+        self::SYNTAX_ERR                  => "SyntaxError",
+        self::INVALID_MODIFICATION_ERR    => "InvalidModificationError",
+        self::NAMESPACE_ERR               => "NamespaceError",
+        self::INVALID_ACCESS_ERR          => "InvalidAccessError",
+        self::SECURITY_ERR                => "SecurityError",
+        self::NETWORK_ERR                 => "NetworkError",
+        self::ABORT_ERR                   => "AbortError",
+        self::URL_MISMATCH_ERR            => "URLMismatchError",
+        self::QUOTA_EXCEEDED_ERR          => "QuotaExceededError",
+        self::TIMEOUT_ERR                 => "TimeoutError",
+        self::INVALID_NODE_TYPE_ERR       => "InvalidNodeTypeError",
+        self::DATA_CLONE_ERR              => "DataCloneError",
     );
 
     public function __construct($code, $message)
     {
-	parent::__construct($message, $code);
-	if (isset(self::$_nameTable[$code]))
-	{
-	    $this->_name = self::$_nameTable[$code];
-	}
-	else
-	    $this->_name = "DOMError";
+        parent::__construct($message, $code);
+        if (isset(self::$_nameTable[$code]))
+        {
+            $this->_name = self::$_nameTable[$code];
+        }
+        else
+            $this->_name = "DOMError";
     }
-    
+
     public function getName()
     {
-	return $this->_name;
+        return $this->_name;
     }
 
 }

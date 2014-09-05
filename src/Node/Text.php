@@ -1,5 +1,7 @@
 <?php
+
 namespace HieuLe\PhpHtmlDom\Node;
+
 /**
  * Description of Text
  *
@@ -7,15 +9,16 @@ namespace HieuLe\PhpHtmlDom\Node;
  */
 class Text extends Node
 {
+
     private $_text;
-    
+
     public function __construct($text = "")
     {
-	parent::__construct();
-	$this->_text = $text;
-	$this->_nodeType = Node::TEXT_NODE;
+        parent::__construct();
+        $this->_text     = $text;
+        $this->_nodeType = Node::TEXT_NODE;
     }
-    
+
     /**
      * Return the text content of this element
      * 
@@ -23,9 +26,9 @@ class Text extends Node
      */
     public function html($formatter = null)
     {
-	return $this->_text;
+        return $this->_text;
     }
-    
+
     /**
      * Set the text content of this element to a new value;
      * 
@@ -34,9 +37,10 @@ class Text extends Node
      */
     public function setText($text)
     {
-	$this->_text = $text;
-	return $this;
+        $this->_text = $text;
+        return $this;
     }
+
 }
 
 ?>

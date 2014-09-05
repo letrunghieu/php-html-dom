@@ -13,18 +13,18 @@ use \HieuLe\PhpHtmlDom\Exception\DOMException;
 class Node
 {
 
-    const ELEMENT_NODE = 1;
-    const TEXT_NODE = 3;
-    const PROCESSING_INSTRUCTION_NODE = 7;
-    const COMMENT_NODE = 8;
-    const DOCUMENT_NODE = 9;
-    const DOCUMENT_TYPE_NODE = 10;
-    const DOCUMENT_FRAGMENT_NODE = 11;
-    const DOCUMENT_POSITION_DISCONNECTED = 0x01;
-    const DOCUMENT_POSITION_PRECEDING = 0x02;
-    const DOCUMENT_POSITION_FOLLOWING = 0x04;
-    const DOCUMENT_POSITION_CONTAINS = 0x08;
-    const DOCUMENT_POSITION_CONTAINED_BY = 0x10;
+    const ELEMENT_NODE                              = 1;
+    const TEXT_NODE                                 = 3;
+    const PROCESSING_INSTRUCTION_NODE               = 7;
+    const COMMENT_NODE                              = 8;
+    const DOCUMENT_NODE                             = 9;
+    const DOCUMENT_TYPE_NODE                        = 10;
+    const DOCUMENT_FRAGMENT_NODE                    = 11;
+    const DOCUMENT_POSITION_DISCONNECTED            = 0x01;
+    const DOCUMENT_POSITION_PRECEDING               = 0x02;
+    const DOCUMENT_POSITION_FOLLOWING               = 0x04;
+    const DOCUMENT_POSITION_CONTAINS                = 0x08;
+    const DOCUMENT_POSITION_CONTAINED_BY            = 0x10;
     const DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC = 0x20;
 
     protected $_nodeType;
@@ -47,7 +47,7 @@ class Node
 
     public function __construct()
     {
-	$this->_childNodes = new NodeList();
+        $this->_childNodes = new NodeList();
     }
 
     /**
@@ -57,7 +57,7 @@ class Node
      */
     public function hasChildNodes()
     {
-	return !$this->_childNodes->isEmpty();
+        return !$this->_childNodes->isEmpty();
     }
 
     /**
@@ -68,10 +68,10 @@ class Node
      */
     public function children($index = null)
     {
-	if ($index === null)
-	    return $this->_childNodes;
-	else
-	    return $this->_childNodes->item($index);
+        if ($index === null)
+            return $this->_childNodes;
+        else
+            return $this->_childNodes->item($index);
     }
 
     /**
@@ -81,7 +81,7 @@ class Node
      */
     public function firstChild()
     {
-	
+        
     }
 
     /**
@@ -91,7 +91,7 @@ class Node
      */
     public function lastChild()
     {
-	
+        
     }
 
     /**
@@ -101,7 +101,7 @@ class Node
      */
     public function previousSibling()
     {
-	
+        
     }
 
     /**
@@ -111,12 +111,12 @@ class Node
      */
     public function nextSibling()
     {
-	
+        
     }
 
     public function normalize()
     {
-	
+        
     }
 
     /**
@@ -127,7 +127,7 @@ class Node
      */
     public function cloneNode($deep = false)
     {
-	
+        
     }
 
     /**
@@ -137,7 +137,7 @@ class Node
      */
     public function isEqualNode(Node $node)
     {
-	
+        
     }
 
     /**
@@ -148,31 +148,31 @@ class Node
      */
     public function contains(Node $node)
     {
-	if ($node === NULL)
-	    return FALSE;
-	if ($node === $this)
-	    return TRUE;
-	return $this->_childNodes->contains($node);
+        if ($node === NULL)
+            return FALSE;
+        if ($node === $this)
+            return TRUE;
+        return $this->_childNodes->contains($node);
     }
 
     public function compareDocumentPosition(Node $other)
     {
-	
+        
     }
 
     public function insertBefore(Node $newNode, Node $referenceNode = NULL)
     {
-	if ($referenceNode === NULL)
-	    return $this->appendChild($newNode);
-	if ($newNode->contains($this))
-	    throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself or its decendants");
-	if ($referenceNode->_parentNode !== $this)
-	    throw new DOMException(DOMException::NOT_FOUND_ERR, "The reference node is not a child of this node");
-	if ($this->_childNodes->insertBefore($newNode, $referenceNode))
-	{
-	    $newNode->_parentNode = $this;
-	}
-	return $this;
+        if ($referenceNode === NULL)
+            return $this->appendChild($newNode);
+        if ($newNode->contains($this))
+            throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself or its decendants");
+        if ($referenceNode->_parentNode !== $this)
+            throw new DOMException(DOMException::NOT_FOUND_ERR, "The reference node is not a child of this node");
+        if ($this->_childNodes->insertBefore($newNode, $referenceNode))
+        {
+            $newNode->_parentNode = $this;
+        }
+        return $this;
     }
 
     /**
@@ -183,13 +183,13 @@ class Node
      */
     public function appendChild(Node $node)
     {
-	if ($node->contains($this))
-	    throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself");
-	if ($node->_parentNode)
-	    $node->_parentNode->removeChild($node);
-	$this->_childNodes->push($node);
-	$node->_parentNode = $this;
-	return $this;
+        if ($node->contains($this))
+            throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself");
+        if ($node->_parentNode)
+            $node->_parentNode->removeChild($node);
+        $this->_childNodes->push($node);
+        $node->_parentNode = $this;
+        return $this;
     }
 
     /**
@@ -201,26 +201,26 @@ class Node
      */
     public function appendTo(Node $node)
     {
-	if ($this->contains($node))
-	    throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself");
-	if ($this->_parentNode)
-	    $this->_parentNode->removeChild($this);
-	$node->appendChild($this);
-	return $this;
+        if ($this->contains($node))
+            throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself");
+        if ($this->_parentNode)
+            $this->_parentNode->removeChild($this);
+        $node->appendChild($this);
+        return $this;
     }
 
     public function replaceChild(Node $newChild, Node $oldChild)
     {
-	if ($oldChild->_parentNode !== $this)
-	    throw new DOMException(DOMException::NOT_FOUND_ERR, "The oldChild is not a child of this node.");
-	if ($newChild->contains($this))
-	    throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself or its ancestor");
-	if ($this->_childNodes->replace($newChild, $oldChild))
-	{
-	    $oldChild->_parentNode = NULL;
-	    $newChild->_parentNode = $this;
-	}
-	return $this;
+        if ($oldChild->_parentNode !== $this)
+            throw new DOMException(DOMException::NOT_FOUND_ERR, "The oldChild is not a child of this node.");
+        if ($newChild->contains($this))
+            throw new DOMException(DOMException::HIERARCHY_REQUEST_ERR, "Cannot append a node to itself or its ancestor");
+        if ($this->_childNodes->replace($newChild, $oldChild))
+        {
+            $oldChild->_parentNode = NULL;
+            $newChild->_parentNode = $this;
+        }
+        return $this;
     }
 
     /**
@@ -233,43 +233,43 @@ class Node
      */
     public function removeChild(Node $child)
     {
-	if ($child->_parentNode !== $this)
-	    throw new DOMException(DOMException::NOT_FOUND_ERR, "The target node is not the child of this node");
-	if ($this->_childNodes->remove($child) !== FALSE)
-	    $child->_parentNode = NULL;
-	return $this;
+        if ($child->_parentNode !== $this)
+            throw new DOMException(DOMException::NOT_FOUND_ERR, "The target node is not the child of this node");
+        if ($this->_childNodes->remove($child) !== FALSE)
+            $child->_parentNode = NULL;
+        return $this;
     }
 
     public function getParent()
     {
-	return $this->_parentNode;
+        return $this->_parentNode;
     }
 
     public function getNodeType()
     {
-	return $this->_nodeType;
+        return $this->_nodeType;
     }
 
     public function getNodeValue()
     {
-	return $this->_nodeValue;
+        return $this->_nodeValue;
     }
 
     public function html($formatter = null)
     {
-	if ($formatter == null)
-	    $formatter = new \HieuLe\PhpHtmlDom\HTML\Formatter();
-	return $formatter->format($this);
+        if ($formatter == null)
+            $formatter = new \HieuLe\PhpHtmlDom\HTML\Formatter();
+        return $formatter->format($this);
     }
 
     public static function escAttr($input)
     {
-	return htmlspecialchars($input, ENT_QUOTES | ENT_HTML5, 'UTF-8', false);
+        return htmlspecialchars($input, ENT_QUOTES | ENT_HTML5, 'UTF-8', false);
     }
 
     public static function escHtml($input)
     {
-	return htmlentities($input, ENT_NOQUOTES | ENT_HTML5, 'UTF-8', false);
+        return htmlentities($input, ENT_NOQUOTES | ENT_HTML5, 'UTF-8', false);
     }
 
 }

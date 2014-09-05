@@ -4,6 +4,7 @@ use HieuLe\PhpHtmlDom\HTML\Formatter;
 use HieuLe\PhpHtmlDom\Node\Node;
 use HieuLe\PhpHtmlDom\Node\Element;
 use HieuLe\PhpHtmlDom\Node\Text;
+
 /**
  * Description of FormatterTest
  *
@@ -11,76 +12,76 @@ use HieuLe\PhpHtmlDom\Node\Text;
  */
 class FormatterTest extends PHPUnit_Framework_TestCase
 {
+
     public function testWriteAttributes()
     {
-	$attributes = array();
-	$formatter = new Formatter();
-	$this->assertEquals("", $formatter->writeAttributes($attributes));
-	
-	$attributes = array(
-	    'class' => 'foo bar',
-	    'id' => 'foo-id'
-	);
-	$this->assertEquals('class="foo bar" id="foo-id"', $formatter->writeAttributes($attributes));
-	
-	$attributes['alt'] = "<>\"";
-	$this->assertEquals('class="foo bar" id="foo-id" alt="&lt;&gt;&quot;"', $formatter->writeAttributes($attributes));
-	
-	$attributes['alt'] = false;
-	$this->assertEquals('class="foo bar" id="foo-id"', $formatter->writeAttributes($attributes));
-	
-	$attributes['alt'] = true;
-	$this->assertEquals('class="foo bar" id="foo-id" alt', $formatter->writeAttributes($attributes));
-	
+        $attributes = array();
+        $formatter  = new Formatter();
+        $this->assertEquals("", $formatter->writeAttributes($attributes));
+
+        $attributes = array(
+            'class' => 'foo bar',
+            'id'    => 'foo-id'
+        );
+        $this->assertEquals('class="foo bar" id="foo-id"', $formatter->writeAttributes($attributes));
+
+        $attributes['alt'] = "<>\"";
+        $this->assertEquals('class="foo bar" id="foo-id" alt="&lt;&gt;&quot;"', $formatter->writeAttributes($attributes));
+
+        $attributes['alt'] = false;
+        $this->assertEquals('class="foo bar" id="foo-id"', $formatter->writeAttributes($attributes));
+
+        $attributes['alt'] = true;
+        $this->assertEquals('class="foo bar" id="foo-id" alt', $formatter->writeAttributes($attributes));
     }
-    
+
     public function testWriteElementOpenningTag()
     {
-	$element = new Element('div');
-	$formatter = new Formatter();
-	$this->assertEquals("<div>", $formatter->writeElementOpenningTag($element));
-	
-	$element->setAttr('class', 'foo');
-	$this->assertEquals("<div class=\"foo\">", $formatter->writeElementOpenningTag($element));
-	
-	$element = new Element('link');
-	$this->assertEquals("<link />", $formatter->writeElementOpenningTag($element));
+        $element   = new Element('div');
+        $formatter = new Formatter();
+        $this->assertEquals("<div>", $formatter->writeElementOpenningTag($element));
+
+        $element->setAttr('class', 'foo');
+        $this->assertEquals("<div class=\"foo\">", $formatter->writeElementOpenningTag($element));
+
+        $element = new Element('link');
+        $this->assertEquals("<link />", $formatter->writeElementOpenningTag($element));
     }
-    
+
     public function testWriteElementClosingTag()
     {
-	$element = new Element('div');
-	$formatter = new Formatter();
-	$this->assertEquals("</div>", $formatter->writeElementClosingTag($element));
-	
-	$element = new Element('link');
-	$this->assertEquals("", $formatter->writeElementClosingTag($element));
+        $element   = new Element('div');
+        $formatter = new Formatter();
+        $this->assertEquals("</div>", $formatter->writeElementClosingTag($element));
+
+        $element = new Element('link');
+        $this->assertEquals("", $formatter->writeElementClosingTag($element));
     }
-    
+
     public function testFormatElementNode()
     {
-	$formatter = new Formatter();
-	
-	$div = new Element('div');
-	$html= <<<HTML
+        $formatter = new Formatter();
+
+        $div  = new Element('div');
+        $html = <<<HTML
 <div></div>
 
 HTML;
-	$this->assertEquals($html, $formatter->format($div));
-	
-	$html= <<<HTML
+        $this->assertEquals($html, $formatter->format($div));
+
+        $html = <<<HTML
   <div></div>
 
 HTML;
-	$this->assertEquals($html, $formatter->format($div, 1));
-	
-	$p = new Element('p');
-	$p->appendTo($div);
-	$br = new Element('br');
-	$br->appendTo($div);
-	$a = new Element('a');
-	$a->appendTo($p);
-	$html= <<<HTML
+        $this->assertEquals($html, $formatter->format($div, 1));
+
+        $p    = new Element('p');
+        $p->appendTo($div);
+        $br   = new Element('br');
+        $br->appendTo($div);
+        $a    = new Element('a');
+        $a->appendTo($p);
+        $html = <<<HTML
   <div>
     <p>
       <a></a>
@@ -89,38 +90,39 @@ HTML;
   </div>
 
 HTML;
-	$this->assertEquals($html, $formatter->format($div, 1));
+        $this->assertEquals($html, $formatter->format($div, 1));
     }
-    
+
     public function testFormatText()
     {
-	$formatter = new Formatter();
-	
-	$text = new Text("Foo");
-	$html = <<<HTML
+        $formatter = new Formatter();
+
+        $text = new Text("Foo");
+        $html = <<<HTML
 Foo
 
 HTML;
-	$this->assertEquals($html, $formatter->format($text));
-	
-	$div = new Element('div');
-	$div->appendChild($text);
-	$html = <<<HTML
+        $this->assertEquals($html, $formatter->format($text));
+
+        $div  = new Element('div');
+        $div->appendChild($text);
+        $html = <<<HTML
 <div>
   Foo
 </div>
 
 HTML;
- 	$this->assertEquals($html, $formatter->format($div));
-	
-	$textArea = new Element('textarea');
-	$textArea->appendChild($text);
-	$html = <<<HTML
+        $this->assertEquals($html, $formatter->format($div));
+
+        $textArea = new Element('textarea');
+        $textArea->appendChild($text);
+        $html     = <<<HTML
 <textarea>Foo</textarea>
 
 HTML;
-	$this->assertEquals($html, $formatter->format($textArea));
+        $this->assertEquals($html, $formatter->format($textArea));
     }
+
 }
 
 ?>

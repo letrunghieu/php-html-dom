@@ -19,38 +19,38 @@ class Element extends Node
      * @var type 
      */
     protected static $voidElements = array(
-	'area' => true,
-	'base' => true,
-	'br' => true,
-	'col' => true,
-	'embed' => true,
-	'hr' => true,
-	'img' => true,
-	'input' => true,
-	'keygen' => true,
-	'link' => true,
-	'meta' => true,
-	'param' => true,
-	'source' => true,
-	'track' => true,
-	'wbr' => true,
+        'area'   => true,
+        'base'   => true,
+        'br'     => true,
+        'col'    => true,
+        'embed'  => true,
+        'hr'     => true,
+        'img'    => true,
+        'input'  => true,
+        'keygen' => true,
+        'link'   => true,
+        'meta'   => true,
+        'param'  => true,
+        'source' => true,
+        'track'  => true,
+        'wbr'    => true,
     );
-    protected $_attributes = array();
+    protected $_attributes         = array();
     private $_tagName;
-    private $_isSelfClosing = false;
+    private $_isSelfClosing        = false;
 
     public function __construct($tagName)
     {
-	parent::__construct();
-	$this->_tagName = trim($tagName);
-	$this->_nodeType = Node::ELEMENT_NODE;
-	if (isset(self::$voidElements[$this->_tagName]))
-	    $this->_isSelfClosing = true;
+        parent::__construct();
+        $this->_tagName       = trim($tagName);
+        $this->_nodeType      = Node::ELEMENT_NODE;
+        if (isset(self::$voidElements[$this->_tagName]))
+            $this->_isSelfClosing = true;
     }
-    
+
     public function isSelfClosing()
     {
-	return $this->_isSelfClosing;
+        return $this->_isSelfClosing;
     }
 
     /**
@@ -60,7 +60,7 @@ class Element extends Node
      */
     public function getTagName()
     {
-	return $this->_tagName;
+        return $this->_tagName;
     }
 
     /**
@@ -72,12 +72,12 @@ class Element extends Node
      */
     public function getAttr($attribute)
     {
-	if (!$this->isValidAttrName($attribute))
-	    throw new DOMException(DOMException::INVALID_CHARACTER_ERR, "The attribute name is not valid");
-	if (isset($this->_attributes[$attribute]))
-	    return $this->_attributes[$attribute];
-	else
-	    return null;
+        if (!$this->isValidAttrName($attribute))
+            throw new DOMException(DOMException::INVALID_CHARACTER_ERR, "The attribute name is not valid");
+        if (isset($this->_attributes[$attribute]))
+            return $this->_attributes[$attribute];
+        else
+            return null;
     }
 
     /**
@@ -90,19 +90,19 @@ class Element extends Node
      */
     public function setAttr($attribute, $value = null)
     {
-	if (!$this->isValidAttrName($attribute))
-	    throw new DOMException(DOMException::INVALID_CHARACTER_ERR, "The attribute name is not valid");
+        if (!$this->isValidAttrName($attribute))
+            throw new DOMException(DOMException::INVALID_CHARACTER_ERR, "The attribute name is not valid");
 // Remove the attr if it is boolean and set to FALSE or NULL
-	if ($value === FALSE || $value === NULL)
-	{
-	    if (isset($this->_attributes[$attribute]))
-		unset($this->_attributes[$attribute]);
-	}
-	else
-	{
-	    $this->_attributes[$attribute] = $value;
-	}
-	return $this;
+        if ($value === FALSE || $value === NULL)
+        {
+            if (isset($this->_attributes[$attribute]))
+                unset($this->_attributes[$attribute]);
+        }
+        else
+        {
+            $this->_attributes[$attribute] = $value;
+        }
+        return $this;
     }
 
     /**
@@ -114,7 +114,7 @@ class Element extends Node
      */
     public function removeAttr($attribute)
     {
-	return $this->setAttr($attribute);
+        return $this->setAttr($attribute);
     }
 
     /**
@@ -124,7 +124,7 @@ class Element extends Node
      */
     public function getAttrs()
     {
-	return $this->_attributes;
+        return $this->_attributes;
     }
 
     /**
@@ -136,26 +136,26 @@ class Element extends Node
      */
     public function addClass($className)
     {
-	$classes = explode(" ", trim($className));
-	if (!isset($this->_attributes['class']))
-	{
-	    $existedClasses = array();
-	}
-	else
-	    $existedClasses = explode(" ", $this->_attributes['class']);
-	$newClasses = array();
-	foreach ($classes as $class)
-	{
-	    if (!$this->isValidAttrName($class))
-		throw new DOMException(DOMException::INVALID_CHARACTER_ERR, "The class name is not valid");
-	    if (!in_array($class, $existedClasses))
-		$newClasses[] = $class;
-	}
+        $classes = explode(" ", trim($className));
+        if (!isset($this->_attributes['class']))
+        {
+            $existedClasses = array();
+        }
+        else
+            $existedClasses = explode(" ", $this->_attributes['class']);
+        $newClasses     = array();
+        foreach ($classes as $class)
+        {
+            if (!$this->isValidAttrName($class))
+                throw new DOMException(DOMException::INVALID_CHARACTER_ERR, "The class name is not valid");
+            if (!in_array($class, $existedClasses))
+                $newClasses[] = $class;
+        }
 
-	$newClasses = trim(implode(" ", array_merge($existedClasses, $newClasses)));
-	if ($newClasses)
-	    $this->_attributes['class'] = $newClasses;
-	return $this;
+        $newClasses                 = trim(implode(" ", array_merge($existedClasses, $newClasses)));
+        if ($newClasses)
+            $this->_attributes['class'] = $newClasses;
+        return $this;
     }
 
     /**
@@ -166,13 +166,13 @@ class Element extends Node
      */
     public function hasClass($className)
     {
-	if (!isset($this->_attributes['class']))
-	{
-	    $existedClasses = array();
-	}
-	else
-	    $existedClasses = explode(" ", $this->_attributes['class']);
-	return in_array($className, $existedClasses);
+        if (!isset($this->_attributes['class']))
+        {
+            $existedClasses = array();
+        }
+        else
+            $existedClasses = explode(" ", $this->_attributes['class']);
+        return in_array($className, $existedClasses);
     }
 
     /**
@@ -183,43 +183,43 @@ class Element extends Node
      */
     public function removeClass($className)
     {
-	$classes = explode(" ", trim($className));
-	if (!isset($this->_attributes['class']))
-	{
-	    $existedClasses = array();
-	}
-	else
-	    $existedClasses = explode(" ", $this->_attributes['class']);
-	$newClasses = array();
-	foreach ($existedClasses as $class)
-	{
-	    if (!in_array($class, $classes))
-		$newClasses[] = $class;
-	}
+        $classes = explode(" ", trim($className));
+        if (!isset($this->_attributes['class']))
+        {
+            $existedClasses = array();
+        }
+        else
+            $existedClasses = explode(" ", $this->_attributes['class']);
+        $newClasses     = array();
+        foreach ($existedClasses as $class)
+        {
+            if (!in_array($class, $classes))
+                $newClasses[] = $class;
+        }
 
-	$newClasses = trim(implode(" ", $newClasses));
-	if ($newClasses)
-	    $this->_attributes['class'] = $newClasses;
-	else if (isset($this->_attributes['class']))
-	    unset($this->_attributes['class']);
+        $newClasses                 = trim(implode(" ", $newClasses));
+        if ($newClasses)
+            $this->_attributes['class'] = $newClasses;
+        else if (isset($this->_attributes['class']))
+            unset($this->_attributes['class']);
 
-	return $this;
+        return $this;
     }
-    
+
     public function appendText($text)
     {
-	$textNode = new Text($text);
-	$this->appendChild($textNode);
-	return $this;
+        $textNode = new Text($text);
+        $this->appendChild($textNode);
+        return $this;
     }
 
 // @todo implement the check phase
     private function isValidAttrName($attribute)
     {
-	$matches = null;
-	$returnValue = preg_match('`^[a-zA-Z][a-zA-Z0-9\\-_]*$`', $attribute, $matches);
+        $matches     = null;
+        $returnValue = preg_match('`^[a-zA-Z][a-zA-Z0-9\\-_]*$`', $attribute, $matches);
 
-	return $returnValue;
+        return $returnValue;
     }
 
 }
