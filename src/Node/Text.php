@@ -41,6 +41,9 @@ class Text extends Node
         return $this;
     }
 
-}
+    public function __toString()
+    {
+        return $this->html();
+    }
 
-?>
+}

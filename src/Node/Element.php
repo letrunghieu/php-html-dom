@@ -222,6 +222,9 @@ class Element extends Node
         return $returnValue;
     }
 
-}
+    public function __toString()
+    {
+        return $this->html();
+    }
 
-?>
+}
