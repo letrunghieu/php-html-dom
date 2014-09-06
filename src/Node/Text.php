@@ -24,7 +24,7 @@ class Text extends Node
      * 
      * @return string
      */
-    public function html($formatter = null)
+    public function html()
     {
         return $this->_text;
     }

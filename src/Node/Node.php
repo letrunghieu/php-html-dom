@@ -3,6 +3,7 @@
 namespace HieuLe\PhpHtmlDom\Node;
 
 use \HieuLe\PhpHtmlDom\Exception\DOMException;
+use \HieuLe\PhpHtmlDom\HTML\Formatter;
 
 /**
  * Objects implementing the Document, DocumentFragment, DocumentType, Element, Text, ProcessingInstruction, or Comment interface (simply called nodes) participate in a tree, simply named the node tree. 
@@ -255,10 +256,9 @@ class Node
         return $this->_nodeValue;
     }
 
-    public function html($formatter = null)
+    public function html()
     {
-        if ($formatter == null)
-            $formatter = new \HieuLe\PhpHtmlDom\HTML\Formatter();
+        $formatter = \HieuLe\PhpHtmlDom\HTML\Formatter::instance();
         return $formatter->format($this);
     }
 

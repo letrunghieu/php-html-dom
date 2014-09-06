@@ -20,6 +20,8 @@ class Formatter
     public $customFormatRules = array(
         'textarea' => array('format_inside' => false),
     );
+    
+    private static $_instance;
 
     /**
      * Contruct the list of all attributes and their value in the format <code>attribute="value"</code>
@@ -91,6 +93,19 @@ class Formatter
         }
         // @todo write other types of node
     }
+    
+    /**
+     * 
+     * @return Formatter
+     */
+    public static function instance()
+    {
+        if (!static::$_instance)
+        {
+            static::$_instance = new Formatter();
+        }
+        return static::$_instance;
+    }
 
     private function _formatElement(Element $node, $depth, $allowFormat)
     {
@@ -137,5 +152,3 @@ class Formatter
     }
 
 }
-
-?>
